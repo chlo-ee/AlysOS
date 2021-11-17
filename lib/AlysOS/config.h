@@ -1,0 +1,2 @@
+#define ALYS_FEATURE_FS
+#define ALYS_FEATURE_DEBUG
