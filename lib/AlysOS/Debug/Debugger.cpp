@@ -33,7 +33,7 @@ void Alys::Debugger::removeHook(DebugHook *hook) {
 void Alys::Debugger::println(String msg) {
     DebugHook *hook = firstHook;
     while (hook != NULL) {
-        hook->execute(msg);
+        hook->execute("[" + String(millis()) + "] " + msg);
         hook = hook->next;
     }
 }

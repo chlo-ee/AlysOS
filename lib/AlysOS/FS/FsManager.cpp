@@ -34,11 +34,17 @@ String Alys::FsManager::readProperty(String property) {
         splitString(content, '=', pair);
         if (pair[0] == property) {
             result = pair[1];
+            Alys::Debugger::getInstance().println("[FS Config] Returning: " + result);
             break;
         }
     } while (file.position() < file.size());
     file.close();
     return result;
+}
+
+String Alys::FsManager::readFile(String fileName) { 
+    File file = LittleFS.open(fileName, "r");
+    return file.readString();
 }
 
 void Alys::FsManager::splitString(String input, char separator, String *result)
@@ -56,7 +62,7 @@ void Alys::FsManager::splitString(String input, char separator, String *result)
 }
 
 void Alys::FsManager::writeProperty(String property, String value) {
-    String resultingFile = "";
+    File writeFile = LittleFS.open(SPI_SETTINGS_MANAGER_FILENAME_TMP, "w");
 
     boolean exists = LittleFS.exists(SPI_SETTINGS_MANAGER_FILENAME);
     if (exists) {
@@ -67,23 +73,19 @@ void Alys::FsManager::writeProperty(String property, String value) {
             String pair[] = {"", ""};
             splitString(content, '=', pair);
             if (pair[0] != property) {
-                resultingFile += pair[0] + "=" + pair[1];
+                writeFile.print(content);
+                writeFile.print('\n');
             }
-            content = readFile.readStringUntil('\n');
         } while (readFile.position() < readFile.size());
         readFile.close();
     }
-
-    File writeFile = LittleFS.open(SPI_SETTINGS_MANAGER_FILENAME, "w");
-
-    if (exists) {
-        writeFile.print(resultingFile);
-        writeFile.print('\n');
-    }
-
+    Alys::Debugger::getInstance().println("[FS Config] Writing: " + property + "=" + value);
     writeFile.print(property);
     writeFile.print("=");
     writeFile.print(value);
     writeFile.print('\n');
     writeFile.close();
+
+    LittleFS.remove(SPI_SETTINGS_MANAGER_FILENAME);
+    LittleFS.rename(SPI_SETTINGS_MANAGER_FILENAME_TMP, SPI_SETTINGS_MANAGER_FILENAME);
 }

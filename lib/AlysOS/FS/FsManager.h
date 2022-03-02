@@ -8,6 +8,7 @@
 #include "kernel.h"
 
 #define SPI_SETTINGS_MANAGER_FILENAME "/settings"
+#define SPI_SETTINGS_MANAGER_FILENAME_TMP "/settings_tmp"
 #define SPI_SETTINGS_MANAGER_PROPERTY_MODE "MODE"
 
 namespace Alys {
@@ -20,6 +21,7 @@ namespace Alys {
 
             boolean init();
             String readProperty(String property);
+            String readFile(String fileName);
             void writeProperty(String property, String value);
 
         private:
