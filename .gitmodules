@@ -1,0 +1,3 @@
+[submodule "lib/AlysOS"]
+	path = lib/AlysOS
+	url = lana@10.0.0.20:/volume1/git/libAlysOS.git
