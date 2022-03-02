@@ -38,7 +38,7 @@ Alys::BootHook bootSystemInfo = Alys::BootHook("Display System Info", boot_syste
 
 //=== Boot Schedule Test
 void boot_scheduleTest() {
-    Alys::MiniSched::MiniSched::getInstance().schedule(test, Alys::MiniTask::ScheduleMode::REPEAT, 1000);
+    Alys::MiniSched::getInstance().schedule(test, Alys::MiniTask::ScheduleMode::REPEAT, 1000);
 }
 Alys::BootHook bootScheduleTestHook = Alys::BootHook("Schedule Test", boot_scheduleTest);
 //########################################## HOOKS ##########################################
