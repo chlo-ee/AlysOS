@@ -1,5 +1,8 @@
 #include <Arduino.h>
 #include "alys.h"
+#include <Services/EchoService.h>
+
+EchoService echoSvc = EchoService();
 
 void test() {
     String teststr = Alys::FsManager::getInstance().readProperty("TESTSTR");
@@ -53,6 +56,9 @@ void setup() {
 
     // Test
     Alys::Init::getInstance().addHook(&bootScheduleTestHook);
+
+    // Echo Service
+    echoSvc.enrol();
 
     // Boot
     Alys::Init::getInstance().boot();
