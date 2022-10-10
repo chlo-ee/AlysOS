@@ -3,7 +3,7 @@
 #include <Services/EchoService.h>
 
 //########################################### MISC ###########################################
-void test() {
+void fsTest() {
     String teststr = Alys::FsManager::getInstance().readProperty("TESTSTR");
     if (teststr.length() == 0) {
         Alys::alys_debug("Writing...");
@@ -33,19 +33,14 @@ Alys::BootHook bootSerialHook = Alys::BootHook("Serial Monitor", boot_serial);
 //=== Boot System Info
 void boot_systemInfo() {
     Alys::alys_debug("+-----------------------------------------+");
-    Alys::alys_debug("|              AlysOS v0.1                |");
+    Alys::alys_debug("|              AlysOS v0.2                |");
     Alys::alys_debug("|           \"We'll be fine!\"              |");
     Alys::alys_debug("+-----------------------------------------+");
     Alys::alys_debug("| Boot sequence is already in progress... |");
     Alys::alys_debug("+-----------------------------------------+");
 }
 Alys::BootHook bootSystemInfo = Alys::BootHook("Display System Info", boot_systemInfo);
-
-//=== Boot Schedule Test
-void boot_scheduleTest() {
-    Alys::MiniSched::getInstance().schedule(test, Alys::MiniTask::ScheduleMode::REPEAT, 1000);
-}
-Alys::BootHook bootScheduleTestHook = Alys::BootHook("Schedule Test", boot_scheduleTest);
+Alys::BootHook bootTestHook = Alys::BootHook("FS Test", fsTest);
 
 
 //######################################### BOOTING #########################################
@@ -58,7 +53,7 @@ void setup() {
     Alys::Init::getInstance().addHook(&bootSystemInfo);
 
     // Test
-    Alys::Init::getInstance().addHook(&bootScheduleTestHook);
+    Alys::Init::getInstance().addHook(&bootTestHook);
 
     // Echo Service
     echoSvc.enrol();
