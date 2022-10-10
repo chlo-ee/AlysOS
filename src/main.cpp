@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include "alys.h"
+#include <Services/EchoService.h>
 
+//########################################### MISC ###########################################
 void test() {
     String teststr = Alys::FsManager::getInstance().readProperty("TESTSTR");
     if (teststr.length() == 0) {
@@ -10,6 +12,9 @@ void test() {
         Alys::alys_debug(teststr);
     }
 }
+
+//######################################### SERVICES ########################################
+EchoService echoSvc = EchoService();
 
 //########################################## HOOKS ##########################################
 //=== Debug Serial
@@ -41,8 +46,9 @@ void boot_scheduleTest() {
     Alys::MiniSched::getInstance().schedule(test, Alys::MiniTask::ScheduleMode::REPEAT, 1000);
 }
 Alys::BootHook bootScheduleTestHook = Alys::BootHook("Schedule Test", boot_scheduleTest);
-//########################################## HOOKS ##########################################
 
+
+//######################################### BOOTING #########################################
 void setup() {
     // Serial monitor setup
     Alys::Debugger::getInstance().addHook(&debugSerialHook);
@@ -53,6 +59,9 @@ void setup() {
 
     // Test
     Alys::Init::getInstance().addHook(&bootScheduleTestHook);
+
+    // Echo Service
+    echoSvc.enrol();
 
     // Boot
     Alys::Init::getInstance().boot();
